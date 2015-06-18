@@ -1,0 +1,63 @@
+<project name="RangeEstimation">
+  <property environment="env"/>
+  <property name="base.dir" value="." />
+  <property name="sources.dir" value="${base.dir}" />
+  <property name="build.dir" value="${base.dir}/build" />
+  <property name="scala.home" value="${env.SCALA_HOME}" />
+
+  <target name="init">
+    <property name="scala-library.jar" value="${scala.home}/lib/scala-library.jar" />
+    <path id="build.classpath">
+      <pathelement location="${scala-library.jar}"   />
+      <fileset dir="${base.dir}/../lib">
+	<include name="*.jar" />
+	<exclude name="RangeEstimation.jar" />
+      </fileset>
+    </path>
+    <taskdef resource="scala/tools/ant/antlib.xml">
+      <classpath>
+	<pathelement location="${scala.home}/lib/scala-compiler.jar"   />
+	<pathelement location="${scala-library.jar}"   />
+	<pathelement location="${scala.home}/lib/scala-reflect.jar"   />
+      </classpath>
+    </taskdef>
+  </target>
+
+  <target name="build" depends="init">
+    <mkdir dir="${build.dir}" />
+    <scalac srcdir="${sources.dir}"
+            destdir="${build.dir}"
+            classpathref="build.classpath"
+	    addparams="-optimize">
+      <include name="src/**/*.scala"   />
+      <include name="test/**/*.scala"   />
+    </scalac>
+    <jar destfile="${base.dir}/../lib/RangeEstimation.jar" basedir="${build.dir}" />
+  </target>
+
+  <target name="clean">
+    <delete>
+      <fileset dir="${build.dir}" includes="**/*.class" />
+    </delete>
+  </target>
+
+  <target name="test" depends="init">
+    <junit printsummary="yes">
+      <classpath>
+	<fileset dir="${base.dir}/../lib">
+	  <include name="*.jar" />
+	</fileset>
+	<pathelement location="${scala.home}/lib/scala-compiler.jar"   />
+	<pathelement location="${scala-library.jar}"   />
+      </classpath>
+      <!-- <formatter type="plain" usefile="false"/> -->
+      <batchtest fork="yes" todir="${base.dir}">
+	<fileset dir="${build.dir}">
+	  <include name="**/*Test.class"/>
+	</fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+
+</project>
