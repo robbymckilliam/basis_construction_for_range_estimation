@@ -1,5 +1,5 @@
 # basis_construction_for_range_estimation
-Software and tex for paper "Basis construction for range estimation by phase unwrapping"
+Software and tex for paper
 
 A. Akhlaq, R. G. McKilliam, and R. Subramanian. Basis construction for range estimation by phase unwrapping. IEEE Signal Process. Letters, 22(11):2152-2156, Nov 2015.
 
